@@ -285,7 +285,7 @@ td, th {
 .light {color: $white;}
 .dark {color: $black;}
 .relative {position: relative;}
-.overflow-hidden {overflow: hidden;}
+.overflow-hidden {overflow: visible;}
 .overlay {
     position: absolute;
     left: 0;
