@@ -1,0 +1,2 @@
+logo size = 133x30
+you can probably make it a little different size (in terms of length)
