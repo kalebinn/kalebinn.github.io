@@ -14,7 +14,7 @@
 		<!-- meta character set -->
 		<meta charset="UTF-8">
 		<!-- Site Title -->
-		<title>Personal</title>
+		<title>Project Blog - Chat App</title>
 
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
 			<!--
@@ -184,8 +184,56 @@
 										and broadcast their message to every other client within the network. 
 										The client will be basically how an end-user will interact with the server (and each other).
 									</p>
-									<h5>To be continued...</h5>
+									<h5>The Server</h5>
 									<p>
+										Alright so let's create the server first. For the chat app, I'll only be using the libraries included with python. In this case they are 
+										<code>Socket </code>and <code>Threading</code>. <code>Socket </code> will be used to create the session. <code>Threading</code> will allow different 
+										parts of this program to run in parallel. It'll make it easier to design and execute things later on. However, let's focus on the socket first.
+										Before I create the <code>socket</code>, I'll just define some globals first.
+										I'll be needing a couple things later: <code>Host address (Host IP and Port)</code> and the <code>buffer size</code>. So here it is:
+										<div class = "quotes">
+											<code>HOST = ''</code><br>
+											<code>PORT = 33000</code><br>
+											<code>BUFSIZ = 1024</code>
+										</div>
+										I'll leave the host IP for later, and the port number as 33000. The buffer size will be 2<sup>8+2</sup> which is 1024 bits.
+										Now it's finally time to create our <code>socket</code>! So to create the <code>socket</code> we need two things: the IP protocol type and the transport type.
+										I'm just going to go with <b>IPv4</b> and <b>TCP</b>. In the <code>socket</code>, we define these two parameters as: <code>AF_INET</code> and <code>SOCK_STREAM</code>, respectively.
+										<br>
+										So we need two lines of code to create our <code>Socket</code> and bind it to our host. We might as well create the dictionaries to store our client names and addresses here as well
+										<br>
+										<div class = "quotes">
+											<code># Creating our socket with IPv4 and TCP. Then bind it to our host address and port<br></code>
+											<code>SERVER = socket(AF_INET, SOCK_STREAM)</code><br>
+											<code>SERVER.bind((host,port))</code><br>
+											<code>
+												<br>
+												# Creating dictionaries to store client names and addresses <br>
+												clients = {}<br>
+												client_addresses = {}
+											</code>
+										</div>
+										Luckily (or unluckily, I'm not sure yet) for us, this is the extend of our intereaction with the lower layers (L1-L4). The rest of this mini-project will be in the upper layers.
+										<br>
+									</p>
+									<h6>Broadcast Function</h6>
+									<p>
+										Next, let's create a broadcast function. All this function will do is take a message, then broadcast it to all connected clients.
+										It's not too special. The format will be something like: <i>client name: "their message"</i>. The client's name and their message should be seperated by
+										a colon. This function also needs to handle any system messages. 
+										<br>
+										So the idea is to take some <i>message</i> in as the input, and then iterate through our clients dictionary and send the <i>message</i> to them one by one.
+										Let's code it.
+										<div class = "quotes">
+											<code>
+												# define the function broadcast. The Sender's default will be 'SYSTEM'.<br>
+												def broadcast (msg, sender='SYSTEM'):<br>
+												&nbsp;&nbsp;&nbsp;&nbsp;broadcast_msg = str(sender) + ': ' +str(msg)<br>
+												&nbsp;&nbsp;&nbsp;&nbsp;for client in clients:<br>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client.send(bytes(broadcast_msg, "utf-8")) 
+											</code>
+										</div>
+										<h5>To be continued...</h5>>
 									</p>
 								</div>
 								<!--
