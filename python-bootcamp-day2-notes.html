@@ -14,7 +14,7 @@
 		<!-- meta character set -->
 		<meta charset="UTF-8">
 		<!-- Site Title -->
-		<title>Python Boot Camp - Day 1 - Notes</title>
+		<title>Python Boot Camp - Day 2 - Notes</title>
 
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
 			<!--
@@ -40,14 +40,24 @@
 					  <nav id="nav-menu-container">
 						<ul class="nav-menu">
 						  <li><a href="index.html">Home</a></li>
-						  <li class="menu-has-children"><a href="">About Me</a>
+						  <li class="menu-has-children"><a href="about.html">About Me</a>
 							<ul>
 							  <li><a href="about.html">About</a></li>
 							  <li><a href="blog-home.html">Project Blog</a></li>
 							</ul>
 						  </li>	 
 						  <li><a href="publications.html">Publications</a></li>
-						  <li><a href="Python-Bootcamp.html">Python Bootcamp</a></li>
+						  <li class="menu-has-children"><a href="Python-Bootcamp.html">Python Boot Camp</a>
+							<ul>
+							  <li><a href="Python-Bootcamp.html">Home Page</a></li>
+							  <li class="menu-has-children"><a href="Python-Bootcamp.html">Notes</a>
+								<ul>
+								  <li><a href="python-bootcamp-day1-notes.html">Day 1</a></li>
+								  <li><a href="python-bootcamp-day2-notes.html">Day 2</a></li>
+								</ul>
+							  </li>	
+							</ul>
+						  </li>	
 						  <!--<li><a href="services.html">Services</a></li> -->
 						  <!--<li><a href="portfolio.html">Portfolio</a></li> -->
 						  <!--<li><a href="price.html">Pricing</a></li>-->
@@ -136,6 +146,7 @@
 											<ul>
 											  <li><a href="#list-intro">Introduction to Lists</a></li>
 											  <li><a href="#list-indices">Indices</a></li>
+											  <li><a href="#list-methods">Basic List Methods</a></li>
 											</ul>
 										</li>	
 									</ul>
@@ -188,7 +199,7 @@
 										we will use the list we created above and perform some operations with their indices.
 										<p class="quotes">
 											<code>my_list = [1, 10, 20, 25, 38, 45.27, 57]</code><br>
-											<code>answer = my_list[0] + my_list[2]</code>
+											<code>answer = my_list[0] + my_list[2]</code><br>
 											<code>print(answer) # this will print 21</code>
 										</p>
 										When we access <code>my_list[0]</code> we care acccessing the first element of the list. When we access 
@@ -204,12 +215,44 @@
 											</code>
 										</p>
 									</p>
-									The range function will stop at <code>len(my_list) - 1</code>, which is perfect because our last index is also <code>len(my_list) - 1</code>.
-									I know that in C++, many of you have used a similar for loop to print an array, however, Python makes things <i>super</i> easy for you by allowing the 
-									<code>print()</code> function to also work with lists. In other words, we can do the same thing in one line of code by typing:
-									<p class="quotes">
-										<code>print(my_list)<br></code>
+									<p>
+										The range function will stop at <code>len(my_list) - 1</code>, which is perfect because our last index is also <code>len(my_list) - 1</code>.
+										I know that in C++, many of you have used a similar for loop to print an array, however, Python makes things <i>super</i> easy for you by allowing the 
+										<code>print()</code> function to also work with lists. In other words, we can do the same thing in one line of code by typing:
+										<p class="quotes">
+											<code>print(my_list)<br></code>
+										</p>
+										Lists in Python has a few more interesting and useful functions that we can take advantage of that we will talk about in a later section. 
 									</p>
+									<p>
+										We can also slice a list by it's index. Let's say we wanted the first three elements of our original list to be put into a smaller sublist. We can do that with 
+										the following code
+										<p class="quotes">
+											<code>mini_list = my_list[:3]<br></code>
+										</p>
+										You can read that as <code>mini_list = </code> <code>my_list </code>up to index 3. Say we wanted to make another mini_list, and this time, we wanted our second mini-list to be 
+										everything <b>after</b> the third element in our original list. We can do it in a similar fashion like this: 
+										<p class="quotes">
+											<code>second_mini_list = my_list[3:]<br></code>
+										</p>
+										This is just saying we want the contents of <code>second_mini_list</code> to be everything after the third element in <code>my_list</code>. It's similar to MATLAB if you've
+										ever used MATLAB.
+										<br>
+										<br>
+										Python lists have many useful built-in methods, so let's talk about some of the basic ones.
+									</p>
+
+									<h3 class="mt-20 mb-20"><a name="List methods">Basic List Methods</a></h3>
+									Here is a list of some of the basic built-in methods of lists. 
+									<p class="quotes">
+										<img src="img/blog/chatapp/list_methods.JPG" class="img-fluid">
+									</p>
+									We most likely won't be using <code>sort()</code> and <code>reverse()</code> all too much during this boot camp, since it's good practice to learn how to reverse a list 
+									manually and to know a few different sorting algorithms. We'll be covering some sorting algorithms towards the end of the course (merge sort and <i>maybe</i> quick sort).
+									<br>
+									<br>
+									Again, this isn't the full list of built-in methods, but these are the basic ones that we'll use at least once throughout this boot camp. Now that we've done the introduction to lists, 
+									we can do some programming challenges and practice with them.
 								</div>
 								<!--
 								<div class="col-lg-12">
@@ -239,15 +282,15 @@
 							<div class="navigation-area">
 								<div class="row">
 									<div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-										<!--
+										
 										<div class="detials">
 											<p>Prev Post</p>
-											<a href="#"><h4>Chat App (Part 2)</h4></a>
+											<a href="#"><h4>Day 1</h4></a>
 										</div>
 										<div class="arrow">
-											<a href="#"><span class="lnr text-black lnr-arrow-left"></span></a>
+											<a href="python-bootcamp-day1-notes.html"><span class="lnr text-black lnr-arrow-left"></span></a>
 										</div>	
-										-->							
+															
 									</div>
 									<div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
 										<div class="detials">
