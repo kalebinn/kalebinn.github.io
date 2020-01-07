@@ -14,7 +14,7 @@
 		<!-- meta character set -->
 		<meta charset="UTF-8">
 		<!-- Site Title -->
-		<title>Python Boot Camp - Day 2 - Notes</title>
+		<title>Python Boot Camp - Day 1 - Notes</title>
 
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
 			<!--
@@ -96,12 +96,13 @@
 							<h1 class="text-white">
 								Python Boot Camp				
 							</h1>	
-							<p class="text-white link-nav">Day 1 Notes</p>
+							<p class="text-white link-nav">Week 1 - Programming Challenges</p>
 						</div>	
 					</div>
 				</div>
 			</section>
-			<!-- End banner Area -->				  
+			<!-- End banner Area -->	
+
 			<!-- Sponser Area-->
 			<div class = "whole-wrap">
 				<div class="container">
@@ -136,170 +137,87 @@
 						<div class="col-lg-15 posts-list">
 							<div class="single-post row">
 								<div class="col-lg-15">
-								<div class ="title"><h2><br>Day 2 - Lists & User defined functions</h2></div>
-								<p><b>Date: </b>01/07/2020<br>	
+								<div class ="title"><h2><br>Week 1 - Programming Challenges</h2></div>
+								<p><b>Date: </b>01/08/2020<br>	
 								<b>Time:</b> 12:00 PM - 3:00 PM<br>
 								<b>Location:</b> Hostos Community College - A-534</p> 
 								<div class="col-lg-15">
 									<ul class="nav-menu">
 										<li class="menu-has-children"><a href="">Skip to</a>
 											<ul>
-											  <li><a href="#list-intro">Introduction to Lists</a></li>
-											  <li><a href="#list-indices">Indices</a></li>
-											  <li><a href="#list-methods">Basic List Methods</a></li>
-											  <li><a href="#def-functions">Defining Functions in Python</a></li>
+												<li><a href="#Introductions">Introduction</a></li>
+												<li><a href="#pc-1">Challenge #1</a></li>
+												<li><a href="#pc-2">Challenge #2</a></li>
+												<li><a href="#pc-3">Challenge #3</a></li>
+												<li><a href="#pc-4">Challenge #4</a></li>
+												<li><a href="#pc-5">Challenge #5</a></li>
+												<li><a href="#pc-6">Challenge #6</a></li>
+												<li><a href="#pc-7">Challenge #7</a></li>
 											</ul>
 										</li>	
 									</ul>
 									<br>
-									<h3 class="mt-20 mb-20"><a name="list-intro">Introduction to Lists</a></h3>
+									<h3 class="mt-20 mb-20"><a name="Introductions">Introduction</a></h3>
 									
 									<p>
-										<code>Lists</code> are a type of <b>data structure</b> that allows you to store any type of data sequentially. A <b>data structure</b> is a way or organizing data
-										for effective/efficient use and/or storage. <code>Lists</code> are the first data structure we will be going over in this boot camp. Later on, we will touch on <code>sets</code>
-										and <code>dictionaries</code>. There are many data structures in computer science, some are not built into Python so you'd have to implement them yourself. This is beyond the scope of this 
-										boot camp given the amount of time we have left. So let's start with lists. 
+										Now that we've covered the very basics of input/output, conditional statements, loops, lists and functions. We can begin to do various programming challenges.
+										Here is a collection of all the programming challenges that we will be covering today. These programming challenges are pulled from various places such 
+										as <b>HackerRank</b>, <b>LeetCode</b>, various textbooks and myself. I'm only including the material we have covered thus far. 
+										You will also be given an assignment since we will not be meeting until Monday. We will go over the programming challenges in the assignment together.
 									</p>
+									<h3 class="mt-20 mb-20"><a name="pc-1">Challenge # 1</a></h3>
+									<i class="fa fa-star"></i>
 									<p>
-										If you come from a C++ background, you may have used vectors or dynamic arrays. Lists work in a very similar fashion to those two. You store the data sequentially and you access 
-										the data with an <code>index</code>. Here's a little diagram showing you how the indices work.
-										<p class = "quotes">
-											<img src="img/blog/chatapp/lists.jpg" class="img-fluid">
-										</p>
-										The value of the <code>indices</code> are on top, whereas the value stored inside the list is inside the box. The bottom numbers are the negative indices. They're another way of accessing
-										the data inside a list. Let's see how we can declare a list in Python.<br>
-										To make an empty list, you just have to use square brackets like this:
-										<p class="quotes">
-											<code>my_list = []</code><br>
-										</p>
-										This is an empty list with nothing inside. We can fill the data when we create the list by seperating each value inside the square bracket with commas 
-										like such:
-										<p class="quotes">
-											<code>my_list = [1, 10, 20, 25, 38, 45.27, 57]</code>
-										</p>
-										Now that we've created the list, Python has a nice built in function called <code>len()</code> to tell us the length of the list.
-										Let's see it in action:
-										<p class="quotes">
-											<code>my_list = [1, 10, 20, 25, 38, 45.27, 57]</code><br>
-											<code>print(len(my_list)) # this will print 7</code>
-										</p>
-										Be warely of the index values! The length of the list may be 7, but the last index in the array is 6.
-										Let's talk a little more about indices and how we can use them.
+										Let's do some warm up.<br>
+										Define a function that prints out all the numbers between 0 and N<sup>2</sup>. Where N is an integer taken from <code>stdin</code>.
 									</p>
 
-									<h3 class="mt-20 mb-20"><a name="indices">Indices</a></h3>
+									<h3 class="mt-20 mb-20"><a name="pc-2">Challenge # 2</a></h3>
+									<i class="fa fa-star"></i>
 									<p>
-										As stated earlier, Python will store the value sequentially and we can access each element by their index.
-										These indices can go backwards or forwards, but let's see the traditional index values first. 
-									</p>
-									<p>
-										Note that traditionally, the first <code>index</code> of a list is <b>always</b> 0. 
-										It is the same as most other programming languages, except for in MATLAB. In computer science, we often start with the first index being 0.
-										In Mathematics, traditionally matrices start with index 1.
-
-										we will use the list we created above and perform some operations with their indices.
-										<p class="quotes">
-											<code>my_list = [1, 10, 20, 25, 38, 45.27, 57]</code><br>
-											<code>answer = my_list[0] + my_list[2]</code><br>
-											<code>print(answer) # this will print 21</code>
-										</p>
-										When we access <code>my_list[0]</code> we care acccessing the first element of the list. When we access 
-										<code>my_list[2]</code>, we are accessing the third element of the array. The first element is 1 and the third
-										is 20. That makes their sum 21.
-									</p>
-									<p>
-										Python allows us to also use the indices in a list. Let's try to <b>traverse</b> or <b>iterate through</b> and print a list
-										by the list's index.
-										<p class="quotes">
-											<code>for index in range(0,len(my_list)):<br>
-											&nbsp;&nbsp;&nbsp;&nbsp;print(my_list[index])<br>
-											</code>
-										</p>
-									</p>
-									<p>
-										The range function will stop at <code>len(my_list) - 1</code>, which is perfect because our last index is also <code>len(my_list) - 1</code>.
-										I know that in C++, many of you have used a similar for loop to print an array, however, Python makes things <i>super</i> easy for you by allowing the 
-										<code>print()</code> function to also work with lists. In other words, we can do the same thing in one line of code by typing:
-										<p class="quotes">
-											<code>print(my_list)<br></code>
-										</p>
-										Lists in Python has a few more interesting and useful functions that we can take advantage of that we will talk about in a later section. 
-									</p>
-									<p>
-										We can also slice a list by it's index. Let's say we wanted the first three elements of our original list to be put into a smaller sublist. We can do that with 
-										the following code
-										<p class="quotes">
-											<code>mini_list = my_list[:3]<br></code>
-										</p>
-										You can read that as <code>mini_list = </code> <code>my_list </code>up to index 3. Say we wanted to make another mini_list, and this time, we wanted our second mini-list to be 
-										everything <b>after</b> the third element in our original list. We can do it in a similar fashion like this: 
-										<p class="quotes">
-											<code>second_mini_list = my_list[3:]<br></code>
-										</p>
-										This is just saying we want the contents of <code>second_mini_list</code> to be everything after the third element in <code>my_list</code>. It's similar to MATLAB if you've
-										ever used MATLAB.
-										<br>
-										<br>
-										Python lists have many useful built-in methods, so let's talk about some of the basic ones.
+										Still warm up.<br>
+										Define a function that prints out all the numbers between 0 and N (inclusive). Where N is an integer taken from <code>stdin</code>. 
+										Put the numbers into a <code>list</code> and <code>return</code> this list.
 									</p>
 
-									<h3 class="mt-20 mb-20"><a name="List methods">Basic List Methods</a></h3>
-									Here is a list of some of the basic built-in methods of lists. 
-									<p class="quotes">
-										<img src="img/blog/chatapp/list_methods.JPG" class="img-fluid">
-									</p>
-									We most likely won't be using <code>sort()</code> and <code>reverse()</code> all too much during this boot camp, since it's good practice to learn how to reverse a list 
-									manually and to know a few different sorting algorithms. We'll be covering some sorting algorithms towards the end of the course (merge sort and <i>maybe</i> quick sort).
-									<br>
-									<br>
-									Again, this isn't the full list of built-in methods, but these are the basic ones that we'll use at least once throughout this boot camp. Now that we've done the introduction to lists, 
-									we can do some programming challenges and practice with them.
-								
-									<h3 class="mt-20 mb-20"><a name="def-functions">Defining Functions in Python</a></h3>
+									<h3 class="mt-20 mb-20"><a name="pc-3">Challenge # 3</a></h3>
+									<i class="fa fa-star"></i><i class="fa fa-star"></i>
 									<p>
-										To general way to define a function is as such:
-										<p class="quotes">
-											<code>def my_function(arguments):</code><br>
-											&nbsp;&nbsp;&nbsp;&nbsp;<i>do something</i>
-											&nbsp;&nbsp;&nbsp;&nbsp;<code>return result # optional</code>
-										</p>
-										Functions in programming are a way of abstracting pieces of code so that it can be repeated again, and again with only the argument changing.
-										This allows us to write programs more efficiently, as we won't have to write repeated code over and over again. <br>
-										as a simple example let's implement the function <i>f(x) = x<sup>2</sup>+1</i>. This can easily be done in Python.
-										<p class="quotes">
-											<code>def f(x):</code><br>
-											&nbsp;&nbsp;&nbsp;&nbsp;<code>return x**2 + 1</code>
-										</p>
-										The <code>return</code> of a function, as the name implies, is what the function returns? I'm not sure if that makes sense, but it is the final output
-										of the function after it finishes running. In Python, you can have more than one return. For example, if we wanted to modify the above function to 
-										return both x<sup>2</sup>+1</i> and x<sup>2</sup>-1</i> (in that order), we can do the following:
-										<p class="quotes">
-											<code>def f(x):</code><br>
-											&nbsp;&nbsp;&nbsp;&nbsp;<code>first_ans = x**2 + 1</code>
-											&nbsp;&nbsp;&nbsp;&nbsp;<code>second_ans = x**2 - 1</code>
-											&nbsp;&nbsp;&nbsp;&nbsp;<code>return first_ans, second_ans</code>
-										</p>
-										
-										And then there are times where you manipulate the input argument rather than having a <code>return</code><br>
-										As an example, let's implement a function that takes in a <code>list</code> of integers as the input argument. The function replaces the first element of 
-										the list with the number 10 (if the first element exists).
-										<p class="quotes">
-											<code>def my_function(my_list):</code><br>
-											&nbsp;&nbsp;&nbsp;&nbsp;<code>my_list[0] = 10</code>
-										</p>
-										As you can see, there is <b>no</b> return to this function, all it does is takes the input list and changes the first element to 10.
-										<h5>HOWEVER</h5>
-										When we test any kind of code, we have to consider the edge cases. That is, we have to see the behavior of the function when an input is unexpected.
-										In the case of our code above, if we put an empty list into this function, the function will throw an error. The error will tell you something along the lines of:
-										<code>IndexError: list index is out of range</code>. This means that index 0 does not exist in the list (it's empty).
-										To fix this, we have to add an if statement. We should only attempt to change the first element to 10, when there is a first element to even change.
-										<p class="quotes">
-											<code>def my_function(my_list):</code><br>
-											&nbsp;&nbsp;&nbsp;&nbsp;if len(my_list) > 0:
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>my_list[0] = 10</code>
-										</p>
-										And that's it! Let's try doing some programming challenges that involves functions.
+										Alright, here we go.<br>
+										Define a function that takes a list as an input. <code>return</code> the maximum of the list and print the result.
 									</p>
+
+									<h3 class="mt-20 mb-20"><a name="pc-4">Challenge # 4</a></h3>
+									<i class="fa fa-star"></i><i class="fa fa-star"></i>
+									<p>
+										Define a function that takes a list as an input. <code>return</code> the maximum <b>even</b> number in the list and print the result.
+										If there are no even numbers return <code>None</code>.
+									</p>
+									
+									<h3 class="mt-20 mb-20"><a name="pc-4">Challenge # 4</a></h3>
+									<i class="fa fa-star"></i><i class="fa fa-star"></i>
+									<p>
+										Define a function that takes a list as an input. <code>return</code> the sum of all <b>odd</b> numbers in the list and print the result.
+									</p>
+
+									<h3 class="mt-20 mb-20"><a name="pc-5">Challenge # 5</a></h3>
+									<i class="fa fa-star"></i><i class="fa fa-star"></i>
+									<p>
+										Define a function that forms a list of all perfect squares between 1 and N(inclusive), where N is a user input. 
+									</p>
+
+									<h3 class="mt-20 mb-20"><a name="pc-5">Challenge # 6</a></h3>
+									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+									<p>
+										Implement the <b>selection sort</b> algorithm in ascending order. 
+									</p>
+
+									<h3 class="mt-20 mb-20"><a name="pc-6">Challenge # 7</a></h3>
+									<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> - Inspired by HackerRank
+									<p>
+										Define a function that takes a list as an input. The function should return the maximum sum of any two elements.
+									</p>
+
 								</div>
 								<!--
 								<div class="col-lg-12">
@@ -329,20 +247,20 @@
 							<div class="navigation-area">
 								<div class="row">
 									<div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-										
+										<!--
 										<div class="detials">
 											<p>Prev Post</p>
-											<a href="#"><h4>Day 1</h4></a>
+											<a href="#"><h4>Chat App (Part 2)</h4></a>
 										</div>
 										<div class="arrow">
-											<a href="python-bootcamp-day1-notes.html"><span class="lnr text-black lnr-arrow-left"></span></a>
+											<a href="#"><span class="lnr text-black lnr-arrow-left"></span></a>
 										</div>	
-															
+										-->							
 									</div>
 									<div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
 										<div class="detials">
 											<p>Next </p>
-											<a href="#"><h4>Day 3</h4></a>
+											<a href="#"><h4>Day 2</h4></a>
 										</div>
 										<div class="arrow">
 											<a href="#"><span class="lnr text-black lnr-arrow-right"></span></a>
