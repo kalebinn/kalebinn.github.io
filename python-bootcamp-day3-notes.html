@@ -223,7 +223,7 @@
 											my_int_list = [5, 10, 28, 32, 90, -1, 3]<br>
 											print(search(-1, my_int_list)) # prints 5<br><br>
 											my_string_list = ["Python", "Is", "pretty", "awesome"] <br>
-											print(search("awesome, my_string_list")) # prints 3<br>
+											print(search("awesome", my_string_list)) # prints 3<br>
 											</code>
 										</p>
 									</p>
@@ -236,11 +236,11 @@
 										<br><br>First we set the first known maximum element to be the very first element of the array. This is our starting assumption. Then we iterate through the list, and as we find a value that is bigger than our current maximum, 
 										we will replace the value of the variable max. 
 										After the loop is done, we’ve finished iterating through the array. At this point we can return our maximum.
-										<br><br>Here is the algorith implemented:
+										<br><br>Here is the algorithm implemented:
 										<p class = "quotes">
 											<code>def find_max(list):<br>
 											&nbsp;&nbsp;&nbsp;&nbsp;max = list[0]<br><br>
-											&nbsp;&nbsp;&nbsp;&nbsp;for i in range(0,list):<br>
+											&nbsp;&nbsp;&nbsp;&nbsp;for i in range(0,len(list)):<br>
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if list[i] > max:<br>
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max = list[i]<br><br>
 											&nbsp;&nbsp;&nbsp;&nbsp;return max
