@@ -1,0 +1,594 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>EE333000 - Group 4 Project</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-12-21"><meta name="DC.source" content="FTIR_Curve_Fitting_no_animation.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>EE333000 - Group 4 Project</h1><!--introduction--><p>Zhichuan Tan, Churan Ruan, David Altamirano, Kelvin Ma</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Loading and transforming the Data</a></li><li><a href="#2">Visualizing the Data</a></li><li><a href="#3">Generating total absorbance (no noise)</a></li><li><a href="#4">Linear Least Squares Fitting (without noise)</a></li><li><a href="#5">Introducing noise</a></li><li><a href="#7">Analysis of Concentration vs. Noise</a></li></ul></div><h2 id="1">Loading and transforming the Data</h2><p>All the data here is from the NIST Chemistry WebBook which you can find here: https://webbook.nist.gov/</p><pre class="codeinput"><span class="comment">%-------------------------------------------------------------------------</span>
+set(0,<span class="string">'DefaultLegendAutoUpdate'</span>,<span class="string">'off'</span>)
+H2O_data = jcampread(fullfile(<span class="string">"NIST_Spectrum_Data"</span>, <span class="string">"H2O.jdx"</span>)); <span class="comment">% Vapor</span>
+CH4_data = jcampread(fullfile(<span class="string">"NIST_Spectrum_Data"</span>, <span class="string">"CH4.jdx"</span>)); <span class="comment">% Methane</span>
+O3_data = jcampread(fullfile(<span class="string">"NIST_Spectrum_Data"</span>, <span class="string">"O3.jdx"</span>));   <span class="comment">% Ozone</span>
+CO2_data = jcampread(fullfile(<span class="string">"NIST_Spectrum_Data"</span>, <span class="string">"CO2.jdx"</span>)); <span class="comment">% CO2</span>
+
+<span class="comment">% convert the x axis data from wavenumber (cm^-1) to wavelength (in mm)</span>
+H2O_data.Blocks.XData = (10E3)./H2O_data.Blocks.XData;
+CH4_data.Blocks.XData = (10E3)./CH4_data.Blocks.XData;
+O3_data.Blocks.XData = (10E3)./O3_data.Blocks.XData;
+CO2_data.Blocks.XData = (10E3)./CO2_data.Blocks.XData;
+
+<span class="comment">% The dataset provided by NIST for Ozone is inaccurate, but for the sake of</span>
+<span class="comment">% this demostration, we will perform some fixes on the data.</span>
+<span class="comment">% data for Ozone used transmittance, y axis must be converted to absorbance</span>
+O3_data.Blocks.YData = -1*log10(O3_data.Blocks.YData);
+<span class="comment">% The O2 data also has a different x axis, since it comes from a different</span>
+<span class="comment">% database. As such, we will find the closest matching element to the</span>
+<span class="comment">% corresponding x axis value of the H2O data (H2O, CH4 and CO2 all have the</span>
+<span class="comment">% same X axis)</span>
+O3_YData = zeros(1, length(H2O_data.Blocks.XData));
+idx = 1;
+<span class="keyword">for</span> x = H2O_data.Blocks.XData
+    differences = abs(O3_data.Blocks.XData - x); <span class="comment">%find the diff in x values</span>
+    [~, min_diff_idx] = min(differences); <span class="comment">%find index of closest value to x</span>
+    O3_YData(1, idx) = O3_data.Blocks.YData(min_diff_idx);
+    idx = idx + 1;
+<span class="keyword">end</span>
+O3_data.Blocks.XData = H2O_data.Blocks.XData;
+O3_data.Blocks.YData = O3_YData;
+</pre><h2 id="2">Visualizing the Data</h2><p>Before we begin with LSF, let's quickly visualize the NIST IR Spectrums</p><pre class="codeinput">hold <span class="string">on</span>; grid <span class="string">on</span>;
+plot(H2O_data.Blocks.XData, H2O_data.Blocks.YData);
+plot(CH4_data.Blocks.XData, CH4_data.Blocks.YData);
+plot(O3_data.Blocks.XData, O3_data.Blocks.YData);
+plot(CO2_data.Blocks.XData, CO2_data.Blocks.YData);
+xlim([min(H2O_data.Blocks.XData) max(H2O_data.Blocks.XData)])
+ylim([0 1]);
+legend(<span class="string">"H2O"</span>, <span class="string">"CH4"</span>, <span class="string">"O3"</span>, <span class="string">"CO2"</span>);
+title(<span class="string">"Spectra Data"</span>);
+xlabel(<span class="string">"wavelength(nm)"</span>);
+ylabel(<span class="string">"Absorbance"</span>);
+</pre><img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_01.png" alt=""> <h2 id="3">Generating total absorbance (no noise)</h2><pre class="codeinput">total_absorbance = zeros(1, length(H2O_data.Blocks.XData));
+<span class="keyword">for</span> idx = 1:length(H2O_data.Blocks.XData)
+   total_absorbance(idx) = max([O3_data.Blocks.YData(1, idx), <span class="keyword">...</span>
+                              H2O_data.Blocks.YData(1, idx), <span class="keyword">...</span>
+                              CO2_data.Blocks.YData(1, idx), <span class="keyword">...</span>
+                              CH4_data.Blocks.YData(1, idx)]);
+<span class="keyword">end</span>
+<span class="comment">% total_absorbance(total_absorbance &gt; 1) = 1;</span>
+plot(CO2_data.Blocks.XData, total_absorbance, <span class="string">'linewidth'</span>, 2);
+legend(<span class="string">"H2O"</span>, <span class="string">"CH4"</span>, <span class="string">"O3"</span>, <span class="string">"CO2"</span>, <span class="string">"Total Absorbance"</span>);
+total_absorbance = transpose(total_absorbance);
+</pre><img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_02.png" alt=""> <h2 id="4">Linear Least Squares Fitting (without noise)</h2><pre class="codeinput">A = zeros(length(H2O_data.Blocks.YData), 4);
+A(:, 1) = H2O_data.Blocks.YData;
+A(:, 2) = CO2_data.Blocks.YData;
+A(:, 3) = CH4_data.Blocks.YData;
+A(:, 4) = O3_data.Blocks.YData;
+
+A_T = transpose(A);
+ATA = (A_T*A);
+AT_b = A_T * total_absorbance;
+concentrations = inv(ATA) * AT_b;
+calculated_absorption = ((concentrations(1)* H2O_data.Blocks.YData) + <span class="keyword">...</span>
+                          (concentrations(2)* CO2_data.Blocks.YData) + <span class="keyword">...</span>
+                          (concentrations(3)* CH4_data.Blocks.YData) + <span class="keyword">...</span>
+                          (concentrations(4)* O3_data.Blocks.YData));
+hold <span class="string">off</span>;
+plot(H2O_data.Blocks.XData, total_absorbance)
+hold <span class="string">on</span>; grid <span class="string">on</span>;
+plot(H2O_data.Blocks.XData, calculated_absorption)
+xlim([min(H2O_data.Blocks.XData) max(H2O_data.Blocks.XData)])
+ylim([0 max(total_absorbance)+0.5]);
+title(<span class="string">"Actual absorbance vs. Calculated absorbance"</span>);
+legend(<span class="string">"Actual"</span>, <span class="string">"Estimated"</span>);
+xlabel(<span class="string">"wavelength(nm)"</span>);
+ylabel(<span class="string">"Absorbance"</span>);
+</pre><img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_03.png" alt=""> <h2 id="5">Introducing noise</h2><p>In this part, we will run 100 trails - each time generating more noise. we will then record the concetration of each of our 4 compounds throughout the trials and plot them. the noise will increase by 0.005 with each trial Essentially, what we are doing is creating a total_absorbance with the following equation:</p><p><img src="FTIR_Curve_Fitting_no_animation_eq17345240118958595289.png" alt="$A_{Total} = A_{Total} + \epsilon$"></p><p>where <img src="FTIR_Curve_Fitting_no_animation_eq00985916268023383491.png" alt="$\epsilon = \sigma (X \sim U(0,1))$"></p><p>and <img src="FTIR_Curve_Fitting_no_animation_eq11373214381793991308.png" alt="$\sigma$"> represents the maximum amplitude of our noise. hence, our noise will be defined by a uniform distribution <img src="FTIR_Curve_Fitting_no_animation_eq14147684715117098429.png" alt="$U[0, \sigma]$">.</p><pre class="codeinput">sigma = 0; <span class="comment">% max noise amplitude</span>
+trials = 1:100; <span class="comment">% number of trials</span>
+H2O_concentrations = zeros(max(trials), 1);
+CO2_concentrations = zeros(max(trials), 1);
+CH4_concentrations = zeros(max(trials), 1);
+O3_concentrations = zeros(max(trials), 1);
+animation(max(trials)) = struct(<span class="string">'cdata'</span>,[],<span class="string">'colormap'</span>,[]);
+epsilons = zeros(max(trials), 1);
+<span class="keyword">for</span> i = trials
+    <span class="comment">% first step in each trial: generate the total absorbance with the</span>
+    <span class="comment">% current level of noise</span>
+    epsilon = sigma * rand(1,1);
+    total_absorbance = zeros(length(H2O_data.Blocks.XData), 1);
+    <span class="keyword">for</span> idx = 1:length(H2O_data.Blocks.XData)
+        total_absorbance(idx) = max([O3_data.Blocks.YData(1, idx), <span class="keyword">...</span>
+                              H2O_data.Blocks.YData(1, idx), <span class="keyword">...</span>
+                              CO2_data.Blocks.YData(1, idx), <span class="keyword">...</span>
+                              CH4_data.Blocks.YData(1, idx)]) + epsilon;
+    <span class="keyword">end</span>
+    sigma = sigma + 0.005;
+
+    <span class="comment">% next, use least square fitting again</span>
+    A_T = transpose(A);
+    ATA = (A_T*A);
+    AT_b = A_T * total_absorbance;
+    concentrations = inv(ATA) * AT_b;
+
+    <span class="comment">% record the concentrations and noise used</span>
+    H2O_concentrations(i) = concentrations(1);
+    CO2_concentrations(i) = concentrations(2);
+    CH4_concentrations(i) = concentrations(3);
+    O3_concentrations(i) = concentrations(4);
+    epsilons(i) = epsilon;
+
+    <span class="comment">% create an animation!</span>
+    <span class="comment">% this show after publishing - but we will do a live demo</span>
+    clf
+    plot(trials(1:i), H2O_concentrations(1:i));
+    hold <span class="string">on</span>; grid <span class="string">on</span>;
+    plot(trials(1:i), CO2_concentrations(1:i));
+    plot(trials(1:i), CH4_concentrations(1:i));
+    plot(trials(1:i), O3_concentrations(1:i));
+    ylim([0 3]);
+    xlim([1 max(trials)]);
+    legend(<span class="string">"H2O"</span>, <span class="string">"CO2"</span>, <span class="string">"CH4"</span>, <span class="string">"O3"</span>);
+    current_title = sprintf(<span class="string">"Trial #%d, sigma = %0.4f, epsilon = %0.4f"</span>,<span class="keyword">...</span>
+                              i, sigma, epsilon);
+    title(current_title);
+    drawnow;
+    <span class="comment">% slow it down with 2 frames each</span>
+    animation(i) = getframe(gcf);
+    animation(i) = getframe(gcf);
+<span class="comment">%     pause(0.25);</span>
+<span class="keyword">end</span>
+<span class="comment">% v = VideoWriter('concentration_animation.gif');</span>
+<span class="comment">% open(v);</span>
+<span class="comment">% writeVideo(v, animation);</span>
+<span class="comment">% close(v);</span>
+</pre><img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_04.png" alt=""> <h2 id="7">Analysis of Concentration vs. Noise</h2><p>for the sake of this example, we want to find out when our model begins to "fail". Let's say we want to find when our concentrations begin to have an uncertainty of +/- 20% from the original value (estimated with 0 noise) Since a single data point exceeding our uncertainty limit isn't too statistically significant - we chose to do a moving average of the previous 10 data points. Once the absolute value of this moving average is above +/-20% - we can say that our fit is no longer works.</p><pre class="codeinput">meaning_avg_window = 10;
+
+<span class="comment">% H2O</span>
+figure;
+plot(trials, H2O_concentrations);
+hold <span class="string">on</span>;
+H2O_con_movingavg = movmean(H2O_concentrations, meaning_avg_window);
+plot(trials, H2O_con_movingavg);
+legend(<span class="string">'H2O Concentrations'</span>, <span class="string">'H2O Concentration moving mean'</span>);
+yline(H2O_concentrations(1) + 0.2 * H2O_concentrations(1));
+yline(H2O_concentrations(1) - 0.2 * H2O_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend(<span class="string">'H2O Concentrations'</span>, <span class="string">'H2O Concentration moving mean'</span>);
+xlabel(<span class="string">"Trial number"</span>);
+ylabel(<span class="string">"Concentration"</span>);
+title(<span class="string">"H2O"</span>);
+
+<span class="comment">%find out where the moving mean exceeds 20% uncertainty</span>
+<span class="keyword">for</span> i = 1:max(trials)
+   <span class="keyword">if</span> H2O_con_movingavg(i) &gt;  H2O_concentrations(1) + 0.2 * H2O_concentrations(1)
+      xline(i);
+      fprintf(<span class="string">"H2O - trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      textbox = sprintf(<span class="string">"trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      text(i+0.5, H2O_concentrations(i)+0.25, textbox);
+      <span class="keyword">break</span>;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% CO2</span>
+figure;
+plot(trials, CO2_concentrations);
+hold <span class="string">on</span>;
+CO2_con_movingavg = movmean(CO2_concentrations, meaning_avg_window);
+plot(trials, CO2_con_movingavg);
+yline(CO2_concentrations(1) + 0.2 * CO2_concentrations(1));
+yline(CO2_concentrations(1) - 0.2 * CO2_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend(<span class="string">'CO2 Concentrations'</span>, <span class="string">'CO2 Concentration moving mean'</span>);
+xlabel(<span class="string">"Trial number"</span>);
+ylabel(<span class="string">"Concentration"</span>);
+title(<span class="string">"CO2"</span>);
+
+<span class="comment">%find out where the moving mean exceeds 20% uncertainty</span>
+<span class="keyword">for</span> i = 1:max(trials)
+   <span class="keyword">if</span> CO2_con_movingavg(i) &gt;  CO2_concentrations(1) + 0.2 * CO2_concentrations(1)
+      xline(i);
+      fprintf(<span class="string">"CO2 - trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      textbox = sprintf(<span class="string">"trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      text(i+0.5, CO2_concentrations(i)+0.25, textbox);
+      <span class="keyword">break</span>;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% CH4</span>
+figure;
+plot(trials, CH4_concentrations);
+hold <span class="string">on</span>;
+CH4_con_movingavg = movmean(CH4_concentrations, meaning_avg_window);
+plot(trials, CH4_con_movingavg);
+yline(CH4_concentrations(1) + 0.2 * CH4_concentrations(1));
+yline(CH4_concentrations(1) - 0.2 * CH4_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend(<span class="string">'CH4 Concentrations'</span>, <span class="string">'CH4 Concentration moving mean'</span>);
+xlabel(<span class="string">"Trial number"</span>);
+ylabel(<span class="string">"Concentration"</span>);
+title(<span class="string">"CH4"</span>);
+<span class="comment">%find out where the moving mean exceeds 20% uncertainty</span>
+<span class="keyword">for</span> i = 1:max(trials)
+   <span class="keyword">if</span> CH4_con_movingavg(i) &gt;  CH4_concentrations(1) + 0.2 * CH4_concentrations(1)
+      xline(i);
+      fprintf(<span class="string">"CH4 - trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      textbox = sprintf(<span class="string">"trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      text(i+0.5, CH4_concentrations(i)+0.25, textbox);
+      <span class="keyword">break</span>;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% O3</span>
+figure;
+plot(trials, O3_concentrations);
+hold <span class="string">on</span>;
+O3_con_movingavg = movmean(O3_concentrations, meaning_avg_window);
+plot(trials, O3_con_movingavg);
+yline(O3_concentrations(1) + 0.2 * O3_concentrations(1));
+yline(O3_concentrations(1) - 0.2 * O3_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend(<span class="string">'O3 Concentrations'</span>, <span class="string">'O3 Concentration moving mean'</span>);
+xlabel(<span class="string">"Trial number"</span>);
+ylabel(<span class="string">"Concentration"</span>);
+title(<span class="string">"O3"</span>);
+<span class="comment">%find out where the moving mean exceeds 20% uncertainty</span>
+<span class="keyword">for</span> i = 1:max(trials)
+   <span class="keyword">if</span> O3_con_movingavg(i) &gt;  O3_concentrations(1) + 0.2 * O3_concentrations(1)
+      xline(i);
+      fprintf(<span class="string">"O3 - trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      textbox = sprintf(<span class="string">"trial #%d, epilson = %0.4f\n"</span>, i, epsilons(i));
+      text(i+0.5, O3_concentrations(i)+0.25, textbox);
+      <span class="keyword">break</span>;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">H2O - trial #29, epilson = 0.0364
+CH4 - trial #14, epilson = 0.0594
+O3 - trial #14, epilson = 0.0594
+</pre><img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_05.png" alt=""> <img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_06.png" alt=""> <img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_07.png" alt=""> <img vspace="5" hspace="5" src="FTIR_Curve_Fitting_no_animation_08.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% EE333000 - Group 4 Project
+% Zhichuan Tan, Churan Ruan, David Altamirano, Kelvin Ma
+%% Loading and transforming the Data
+% All the data here is from the NIST Chemistry WebBook which you can find
+% here: https://webbook.nist.gov/
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+set(0,'DefaultLegendAutoUpdate','off')
+H2O_data = jcampread(fullfile("NIST_Spectrum_Data", "H2O.jdx")); % Vapor
+CH4_data = jcampread(fullfile("NIST_Spectrum_Data", "CH4.jdx")); % Methane
+O3_data = jcampread(fullfile("NIST_Spectrum_Data", "O3.jdx"));   % Ozone
+CO2_data = jcampread(fullfile("NIST_Spectrum_Data", "CO2.jdx")); % CO2
+
+% convert the x axis data from wavenumber (cm^-1) to wavelength (in mm)
+H2O_data.Blocks.XData = (10E3)./H2O_data.Blocks.XData;
+CH4_data.Blocks.XData = (10E3)./CH4_data.Blocks.XData;
+O3_data.Blocks.XData = (10E3)./O3_data.Blocks.XData; 
+CO2_data.Blocks.XData = (10E3)./CO2_data.Blocks.XData;
+
+% The dataset provided by NIST for Ozone is inaccurate, but for the sake of
+% this demostration, we will perform some fixes on the data. 
+% data for Ozone used transmittance, y axis must be converted to absorbance
+O3_data.Blocks.YData = -1*log10(O3_data.Blocks.YData);
+% The O2 data also has a different x axis, since it comes from a different
+% database. As such, we will find the closest matching element to the
+% corresponding x axis value of the H2O data (H2O, CH4 and CO2 all have the
+% same X axis)
+O3_YData = zeros(1, length(H2O_data.Blocks.XData));
+idx = 1;
+for x = H2O_data.Blocks.XData
+    differences = abs(O3_data.Blocks.XData - x); %find the diff in x values
+    [~, min_diff_idx] = min(differences); %find index of closest value to x 
+    O3_YData(1, idx) = O3_data.Blocks.YData(min_diff_idx);
+    idx = idx + 1;
+end
+O3_data.Blocks.XData = H2O_data.Blocks.XData;
+O3_data.Blocks.YData = O3_YData;
+
+%% Visualizing the Data
+% Before we begin with LSF, let's quickly visualize the NIST IR Spectrums
+hold on; grid on;
+plot(H2O_data.Blocks.XData, H2O_data.Blocks.YData);
+plot(CH4_data.Blocks.XData, CH4_data.Blocks.YData);
+plot(O3_data.Blocks.XData, O3_data.Blocks.YData);
+plot(CO2_data.Blocks.XData, CO2_data.Blocks.YData);
+xlim([min(H2O_data.Blocks.XData) max(H2O_data.Blocks.XData)])
+ylim([0 1]);
+legend("H2O", "CH4", "O3", "CO2");
+title("Spectra Data");
+xlabel("wavelength(nm)");
+ylabel("Absorbance");
+%% Generating total absorbance (no noise)
+total_absorbance = zeros(1, length(H2O_data.Blocks.XData));
+for idx = 1:length(H2O_data.Blocks.XData)
+   total_absorbance(idx) = max([O3_data.Blocks.YData(1, idx), ...
+                              H2O_data.Blocks.YData(1, idx), ...
+                              CO2_data.Blocks.YData(1, idx), ...
+                              CH4_data.Blocks.YData(1, idx)]);
+end
+% total_absorbance(total_absorbance > 1) = 1;
+plot(CO2_data.Blocks.XData, total_absorbance, 'linewidth', 2);
+legend("H2O", "CH4", "O3", "CO2", "Total Absorbance");
+total_absorbance = transpose(total_absorbance);
+%% Linear Least Squares Fitting (without noise)
+A = zeros(length(H2O_data.Blocks.YData), 4);
+A(:, 1) = H2O_data.Blocks.YData;
+A(:, 2) = CO2_data.Blocks.YData;
+A(:, 3) = CH4_data.Blocks.YData;
+A(:, 4) = O3_data.Blocks.YData;
+
+A_T = transpose(A);
+ATA = (A_T*A);
+AT_b = A_T * total_absorbance;
+concentrations = inv(ATA) * AT_b;
+calculated_absorption = ((concentrations(1)* H2O_data.Blocks.YData) + ...
+                          (concentrations(2)* CO2_data.Blocks.YData) + ...
+                          (concentrations(3)* CH4_data.Blocks.YData) + ...
+                          (concentrations(4)* O3_data.Blocks.YData));
+hold off; 
+plot(H2O_data.Blocks.XData, total_absorbance)
+hold on; grid on;
+plot(H2O_data.Blocks.XData, calculated_absorption)
+xlim([min(H2O_data.Blocks.XData) max(H2O_data.Blocks.XData)])
+ylim([0 max(total_absorbance)+0.5]);
+title("Actual absorbance vs. Calculated absorbance");
+legend("Actual", "Estimated");
+xlabel("wavelength(nm)");
+ylabel("Absorbance");
+%% Introducing noise 
+% In this part, we will run 100 trails - each time generating more noise. 
+% we will then record the concetration of each of our 4 compounds throughout
+% the trials and plot them. 
+% the noise will increase by 0.005 with each trial
+% Essentially, what we are doing is creating a total_absorbance with the
+% following equation: 
+%%
+% $A_{Total} = A_{Total} + \epsilon$
+% 
+% where $\epsilon = \sigma (X \sim U(0,1))$
+%
+% and $\sigma$ represents the maximum amplitude of our noise. 
+% hence, our noise will be defined by a uniform distribution $U[0, \sigma]$. 
+sigma = 0; % max noise amplitude 
+trials = 1:100; % number of trials 
+H2O_concentrations = zeros(max(trials), 1); 
+CO2_concentrations = zeros(max(trials), 1);
+CH4_concentrations = zeros(max(trials), 1);
+O3_concentrations = zeros(max(trials), 1);
+animation(max(trials)) = struct('cdata',[],'colormap',[]);
+epsilons = zeros(max(trials), 1);
+for i = trials
+    % first step in each trial: generate the total absorbance with the
+    % current level of noise
+    epsilon = sigma * rand(1,1); 
+    total_absorbance = zeros(length(H2O_data.Blocks.XData), 1);
+    for idx = 1:length(H2O_data.Blocks.XData)
+        total_absorbance(idx) = max([O3_data.Blocks.YData(1, idx), ...
+                              H2O_data.Blocks.YData(1, idx), ...
+                              CO2_data.Blocks.YData(1, idx), ...
+                              CH4_data.Blocks.YData(1, idx)]) + epsilon;
+    end
+    sigma = sigma + 0.005;
+    
+    % next, use least square fitting again
+    A_T = transpose(A);
+    ATA = (A_T*A);
+    AT_b = A_T * total_absorbance;
+    concentrations = inv(ATA) * AT_b;
+
+    % record the concentrations and noise used
+    H2O_concentrations(i) = concentrations(1);
+    CO2_concentrations(i) = concentrations(2);
+    CH4_concentrations(i) = concentrations(3);
+    O3_concentrations(i) = concentrations(4);
+    epsilons(i) = epsilon;
+    
+    % create an animation!
+    % this show after publishing - but we will do a live demo 
+    clf
+    plot(trials(1:i), H2O_concentrations(1:i));
+    hold on; grid on;
+    plot(trials(1:i), CO2_concentrations(1:i));
+    plot(trials(1:i), CH4_concentrations(1:i));
+    plot(trials(1:i), O3_concentrations(1:i));
+    ylim([0 3]);
+    xlim([1 max(trials)]);
+    legend("H2O", "CO2", "CH4", "O3");
+    current_title = sprintf("Trial #%d, sigma = %0.4f, epsilon = %0.4f",...
+                              i, sigma, epsilon);
+    title(current_title);
+    drawnow;
+    % slow it down with 2 frames each 
+    animation(i) = getframe(gcf);
+    animation(i) = getframe(gcf);
+%     pause(0.25);
+end
+% v = VideoWriter('concentration_animation.gif');
+% open(v);
+% writeVideo(v, animation);
+% close(v);
+%% Analysis of Concentration vs. Noise
+% for the sake of this example, we want to find out when our model begins
+% to "fail". Let's say we want to find when our concentrations begin to
+% have an uncertainty of +/- 20% from the original value (estimated with 0
+% noise)
+% Since a single data point exceeding our uncertainty limit isn't too
+% statistically significant - we chose to do a moving average of the
+% previous 10 data points. Once the absolute value of this moving average is
+% above +/-20% - we can say that our fit is no longer works. 
+meaning_avg_window = 10;
+
+% H2O
+figure;
+plot(trials, H2O_concentrations);
+hold on;
+H2O_con_movingavg = movmean(H2O_concentrations, meaning_avg_window);
+plot(trials, H2O_con_movingavg);
+legend('H2O Concentrations', 'H2O Concentration moving mean');
+yline(H2O_concentrations(1) + 0.2 * H2O_concentrations(1));
+yline(H2O_concentrations(1) - 0.2 * H2O_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend('H2O Concentrations', 'H2O Concentration moving mean');
+xlabel("Trial number");
+ylabel("Concentration");
+title("H2O");
+
+%find out where the moving mean exceeds 20% uncertainty 
+for i = 1:max(trials)
+   if H2O_con_movingavg(i) >  H2O_concentrations(1) + 0.2 * H2O_concentrations(1)
+      xline(i);
+      fprintf("H2O - trial #%d, epilson = %0.4f\n", i, epsilons(i));
+      textbox = sprintf("trial #%d, epilson = %0.4f\n", i, epsilons(i)); 
+      text(i+0.5, H2O_concentrations(i)+0.25, textbox);
+      break;
+   end
+end
+
+% CO2
+figure;
+plot(trials, CO2_concentrations);
+hold on;
+CO2_con_movingavg = movmean(CO2_concentrations, meaning_avg_window);
+plot(trials, CO2_con_movingavg);
+yline(CO2_concentrations(1) + 0.2 * CO2_concentrations(1));
+yline(CO2_concentrations(1) - 0.2 * CO2_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend('CO2 Concentrations', 'CO2 Concentration moving mean');
+xlabel("Trial number");
+ylabel("Concentration");
+title("CO2");
+
+%find out where the moving mean exceeds 20% uncertainty 
+for i = 1:max(trials)
+   if CO2_con_movingavg(i) >  CO2_concentrations(1) + 0.2 * CO2_concentrations(1)
+      xline(i);
+      fprintf("CO2 - trial #%d, epilson = %0.4f\n", i, epsilons(i));
+      textbox = sprintf("trial #%d, epilson = %0.4f\n", i, epsilons(i)); 
+      text(i+0.5, CO2_concentrations(i)+0.25, textbox);
+      break;
+   end
+end
+
+% CH4
+figure;
+plot(trials, CH4_concentrations);
+hold on;
+CH4_con_movingavg = movmean(CH4_concentrations, meaning_avg_window);
+plot(trials, CH4_con_movingavg);
+yline(CH4_concentrations(1) + 0.2 * CH4_concentrations(1));
+yline(CH4_concentrations(1) - 0.2 * CH4_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend('CH4 Concentrations', 'CH4 Concentration moving mean');
+xlabel("Trial number");
+ylabel("Concentration");
+title("CH4");
+%find out where the moving mean exceeds 20% uncertainty 
+for i = 1:max(trials)
+   if CH4_con_movingavg(i) >  CH4_concentrations(1) + 0.2 * CH4_concentrations(1)
+      xline(i);
+      fprintf("CH4 - trial #%d, epilson = %0.4f\n", i, epsilons(i));
+      textbox = sprintf("trial #%d, epilson = %0.4f\n", i, epsilons(i)); 
+      text(i+0.5, CH4_concentrations(i)+0.25, textbox);
+      break;
+   end
+end
+
+% O3
+figure;
+plot(trials, O3_concentrations);
+hold on;
+O3_con_movingavg = movmean(O3_concentrations, meaning_avg_window);
+plot(trials, O3_con_movingavg);
+yline(O3_concentrations(1) + 0.2 * O3_concentrations(1));
+yline(O3_concentrations(1) - 0.2 * O3_concentrations(1));
+xlim([1 max(trials)]);
+ylim([0, 3]);
+legend('O3 Concentrations', 'O3 Concentration moving mean');
+xlabel("Trial number");
+ylabel("Concentration");
+title("O3");
+%find out where the moving mean exceeds 20% uncertainty 
+for i = 1:max(trials)
+   if O3_con_movingavg(i) >  O3_concentrations(1) + 0.2 * O3_concentrations(1)
+      xline(i);
+      fprintf("O3 - trial #%d, epilson = %0.4f\n", i, epsilons(i));
+      textbox = sprintf("trial #%d, epilson = %0.4f\n", i, epsilons(i)); 
+      text(i+0.5, O3_concentrations(i)+0.25, textbox);
+      break;
+   end
+end
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
